@@ -29,7 +29,9 @@ class Human_Player(Player):
         while True:
             Human_move = input("""Play "rock" or "paper" or "scissors":""")
 
-            if Human_move.lower() not in moves:  # add .lower()method in case someone wrote in capital letters + validate the user input
+            if Human_move.lower() not in moves:
+                #  add .lower()method in case someone wrote in capital letters
+                #  validate the user input
                 print("please Enter a valid input")
             else:
                 return Human_move.lower()
@@ -49,7 +51,9 @@ class Random_Player(Player):
         pass
 
 
-class Reflect_Player(Player):  # Palyes a random move in round 1 then it saves opponent's previous move and playe that move in the next round
+class Reflect_Player(Player):
+    # Palyes a random move in round 1 then it saves opponent's previous move
+    # and playe that move in the next round
     def __init__(self):
         self.opponent_last_move = ''
 
@@ -64,7 +68,9 @@ class Reflect_Player(Player):  # Palyes a random move in round 1 then it saves o
             self.opponent_last_move = their_move
 
 
-class Cycle_Player(Player):  # plays the value that follows the prevouse one in the list of moves by remembring the index and reseting it when it reach 2
+class Cycle_Player(Player):
+    #  plays the value that follows the prevouse one in the list of moves
+    #  by remembring the index and reseting it when it reach 2
     def __init__(self):
         self.my_last_move = ''
 
@@ -91,32 +97,46 @@ class Game:
         self.Player2_score = 0
         self.Player1_score = 0
 
-    def beats(self, one, two):  # states the scores and winnign or losing status of the players
-        if (one == 'rock' and two == 'scissors') or (one == 'scissors' and two == 'paper') or (
-                one == 'paper' and two == 'rock'):
-            print("Player1 is the winner")
-            self.Player1_score += 1
-            print(f"Player1 score is{self.Player1_score}\nPlaye2 score is {self.Player2_score}\n \n")
+    def beats(self, one, two):
+        # states the scores and winnign or losing status of the players
+        if ((one == 'rock' and two == 'scissors')
+            or(one == 'scissors' and two == 'paper')
+                or(one == 'paper' and two == 'rock')):
+
+                print("Player1 is the winner")
+                self.Player1_score += 1
+                print(f"Player1 score is {self.Player1_score}\nPlayer2 "
+                      f"score is {self.Player2_score}\n \n")
         elif one == two:
-            print(f"it is a tie!\nPlayer1 score  is {self.Player1_score} \nPlayer2  score is {self.Player2_score}\n \n")
+            print(f"it is a tie!\nPlayer1 score is "
+                  f"{self.Player1_score} \nPlayer2 score is "
+                  f"{self.Player2_score}\n \n")
             self.Player1_score = self.Player1_score
             self.Player2_score = self.Player2_score
         else:
             self.Player2_score += 1
             print(
-                f"Player2 is the winner \nPlayer1 score is {self.Player1_score} \nPlayer2 score is {self.Player2_score}\n \n ")
+                f"Player2 is the winner \nPlayer1 score is "
+                f"{self.Player1_score} \nPlayer2 score is "
+                f"{self.Player2_score}\n \n ")
 
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
         # I had a diffrent idea of how to exploit the learn function.
+
         print(f"Player 1: {move1}  Player 2: {move2}")
-        # by using isinstance() the program will  check the type of the object then assign the correct learn method to that object
+
+        #  by using isinstance() the program will  check the type of
+        #  the object then assign the correct learn method to that object
         if isinstance(self.p1, Reflect_Player):
-            # for example : if Player1 is an instance from the Reflect_player class then it will use the corresponding learn function and the appropiate move
+            # for example : if Player1 is an instance from the
+            # Reflect_player class then it will use the corresponding
+            # learn function and the appropiate move
             self.p1.learn(move2)
         elif isinstance(self.p1, Cycle_Player):
-            # same her is will use the learn method from the class of the object after it is aninstance from that class
+            # same her is will use the learn method from the class of
+            #  the object after it is aninstance from that class
             self.p1.learn(move1)
 
         # This is the learn functions for Player 2
@@ -138,12 +158,15 @@ class Game:
                 break
         print("\n \nGame start!\n \n")
         RN = int(number_of_rounds)
-        #  let the rounds start from 1 and end at the number of rounds assinged by the user(+1 becuase it starts at 0)
+        #  let the rounds start from 1 and end at the number of rounds assinged
+        # by the user(+1 becuase it starts at 0)
         for rounds in range(1, RN+1):
             print(f"Round {rounds}:")
             self.play_round()
         print(
-            f"Game over! \n \nPlayer1 total score is {self.Player1_score} \nPlayer2 total score  is {self.Player2_score} \n\n")
+            f"Game over! \n \nPlayer1 total score is "
+            f"{self.Player1_score} \nPlayer2 total score is "
+            f"{self.Player2_score} \n\n")
         # evaluate the winner
         if self.Player1_score > self.Player2_score:
             print("Player1 is the winner")
@@ -156,9 +179,12 @@ class Game:
 if __name__ == '__main__':
     player1 = 0
     player2 = 0
-    while True:  # let the user choose the palyers modes + validate their choice
+    while True:  # let the user choose the palyers modes
+                # validate their choice
         print(
-            """please choose by entering the corresponding number:\n 1: Human Player\n 2: The Repeater\n 3: The Rflecter\n 4: The Cycle Player\n 5: The Random Player""")
+            "please choose by entering the corresponding"
+            "number:\n 1: Human Player\n 2: The Repeater\n "
+            "3: The Rflecter\n 4: The CyclePlayer\n 5: The Random Player")
         Player1 = input('player1 choose: ')
         Player2 = input('player2 choose: ')
         if not Player1.isdigit() or not Player2.isdigit():
@@ -181,6 +207,9 @@ if __name__ == '__main__':
             elif Player1 == 5:
                 p1 = Random_Player()
                 Player1 = p1
+            elif Player1 not in range(5):
+                print("Please enter a valid choice")
+                continue
 
             if Player2 == 1:
                 p2 = Human_Player()
@@ -197,6 +226,9 @@ if __name__ == '__main__':
             elif Player2 == 5:
                 p2 = Random_Player()
                 Player2 = p2
+            elif Player1 not in range(5):
+                print("Please enter a valid choice")
+                continue
 
             break
 
